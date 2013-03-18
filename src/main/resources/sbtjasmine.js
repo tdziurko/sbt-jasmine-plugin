@@ -163,6 +163,11 @@ function runTests(appJsRoot, appJsLibRoot, testRoot, confFile, envHtml) {
         });
     }
 
+    print("##teamcity[testSuiteStarted name='JasmineTests']");
+
+    print("##teamcity[testStarted name='tomek test']");
+    print("##teamcity[testFailed name='tomek test' message='failure message' details='message and stack trace']");
+    print("##teamcity[testFinished name='tomek test']");
     for (i = 0, len = EnvJasmine.specs.length >>> 0; i < len; i += 1) {
         try {
             EnvJasmine.currentScope = {};
@@ -175,8 +180,6 @@ function runTests(appJsRoot, appJsLibRoot, testRoot, confFile, envHtml) {
             var specLoader = 'require(["' + EnvJasmine.specFile + '"]);';
             EnvJasmine.cx.evaluateString(EnvJasmine.currentScope, specLoader, 'Loading '+EnvJasmine.specFile, 0, null);
             print("running the jasmine tests");
-            print("testFailed " + "name='" + "Dummy test" + ": ' details='" + "dummy details");
-            print("##teamcity[testFailed " + "name='" + "Dummy test" + ": ' details='" + "dummy details" +"']");
             var windowLoader = 'window.location.assign(["file://", "'+envHtml+'"].join(EnvJasmine.SEPARATOR));';
             EnvJasmine.cx.evaluateString(EnvJasmine.currentScope, windowLoader, 'Executing '+EnvJasmine.specs[i], 0, null);
         } catch (e) {
@@ -189,6 +192,7 @@ function runTests(appJsRoot, appJsLibRoot, testRoot, confFile, envHtml) {
             }
         }
     }
+    print("##teamcity[testSuiteFinished name='JasmineTests']");
 
     if (EnvJasmine.results.length > 0) {
         print("\n");
