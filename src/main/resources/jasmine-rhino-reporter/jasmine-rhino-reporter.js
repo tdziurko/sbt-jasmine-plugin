@@ -57,13 +57,13 @@ var RhinoReporter = function() {
 
         reportSpecResults: function(spec) {
             var suiteName = this.getSuiteName(spec.suite);
-            var testName = suiteName + ":" + spec.description;
+            var testName = tidy(suiteName + ":" + spec.description);
 
-            EnvJasmine.teamCityReports.push("##teamcity[testStarted name='" + tidy(testName) + "']");
+            EnvJasmine.teamCityReports.push("##teamcity[testStarted name='" + testName + "']");
 
             if (spec.results().passed()) {
                 System.out.print(EnvJasmine.green("."));
-                EnvJasmine.teamCityReports.push("##teamcity[testPassed " + "name='" + tidy(testName) + "']");
+                EnvJasmine.teamCityReports.push("##teamcity[testPassed " + "name='" + testName + "']");
             } else {
                 var i, msg, result,
                     specResults = spec.results().getItems();
@@ -95,12 +95,12 @@ var RhinoReporter = function() {
                 }
 
                 EnvJasmine.teamCityReports.push("##teamcity[testFailed " + "name='" + tidy(testName) +
-                    "' message='" + tidy("test message") +"' details='" + tidy("test details") + "']");
+                    "' message='" + tidy(message) +"' details='" + tidy("test details") + "']");
 //                EnvJasmine.teamCityReports.push("##teamcity[testFailed name='tomek test' message='failure message' details='message and stack trace']");
 //                EnvJasmine.teamCityReports.push("##teamcity[testFailed " + "name='" + tidy(testName) + "']");
                 EnvJasmine.results.push(msg.join("\n"));
             }
-            EnvJasmine.teamCityReports.push("##teamcity[testFinished name='" + tidy(testName) + "']");
+            EnvJasmine.teamCityReports.push("##teamcity[testFinished name='" + testName + "']");
         },
 
         log: function(str) {
