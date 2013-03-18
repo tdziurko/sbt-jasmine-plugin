@@ -155,7 +155,7 @@ var RhinoSpecReporter = function() {
                 EnvJasmine.failedCount += 1;
                 EnvJasmine.results.push(msg.join("\n"));
                 var suiteName = this.getSuiteName(spec.suite);
-                teamCityReporter.reportFailedTest(suiteName + ": " + spec.description, msg);
+                teamCityReporter.reportFailedTest(suiteName + ": " + spec.description, specResults);
             }
             EnvJasmine.totalCount += 1;
         },
@@ -195,11 +195,11 @@ var TeamCityReporter = function() {
 
     return {
         reportPassedTest: new function(testName) {
-            System.out.print(EnvJasmine.green("##teamcity[testFinished " + "name='" + tidy(testName) + "']"));
+            print(EnvJasmine.green("##teamcity[testFinished " + "name='" + tidy(testName) + "']"));
         },
 
         reportFailedTest: new function(testName, details) {
-            System.out.print(EnvJasmine.green("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + tidy(details) +"']"));
+            print(EnvJasmine.green("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + tidy(details) +"']"));
         }
     }
 }
