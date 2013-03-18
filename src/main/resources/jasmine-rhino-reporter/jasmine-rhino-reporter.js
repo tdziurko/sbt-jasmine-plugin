@@ -67,6 +67,8 @@ var RhinoReporter = function() {
             } else {
                 var i, msg, result,
                     specResults = spec.results().getItems();
+                var message = "";
+                var details = "";
 
                 System.out.print(EnvJasmine.red("F"));
 
@@ -81,16 +83,19 @@ var RhinoReporter = function() {
                     result = specResults[i];
                     if (result.type == 'log') {
                         msg.push(result.toString());
+                        message = result.toString();
                     } else if (result.type == 'expect' && result.passed && !result.passed()) {
                         msg.push(result.message);
-
+                        message = result.toString();
                         if (result.trace.stack) {
                             msg.push(specResults[i].trace.stack);
+                            details = specResults[i].trace.stack;
                         }
                     }
                 }
 
-                EnvJasmine.teamCityReports.push("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + tidy(msg[4]) +"']");
+                EnvJasmine.teamCityReports.push("##teamcity[testFailed " + "name='" + tidy(testName) +
+                    "' message='" + tidy(message) +"' details='" + tidy(details) + "']");
                 EnvJasmine.results.push(msg.join("\n"));
             }
             EnvJasmine.teamCityReports.push("##teamcity[testFinished name='" + tidy(testName) + "']");
