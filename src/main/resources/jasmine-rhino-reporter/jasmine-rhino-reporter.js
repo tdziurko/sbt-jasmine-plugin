@@ -195,11 +195,13 @@ var TeamCityReporter = function() {
 
     return {
         reportPassedTest: new function(testName) {
-            print(EnvJasmine.green("##teamcity[testFinished " + "name='" + tidy(testName) + "']"));
+            print("testFinished " + "name='" + tidy(testName) + "'");
+            print("##teamcity[testFinished " + "name='" + tidy(testName) + "']");
         },
 
         reportFailedTest: new function(testName, details) {
-            print(EnvJasmine.green("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + tidy(details) +"']"));
+            print("testFailed " + "name='" + tidy(testName) + "' details='" + tidy(details) +"'");
+            print("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + tidy(details) +"']");
         }
     }
 }
