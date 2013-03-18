@@ -5,6 +5,23 @@ var RhinoReporter = function() {
 	 * Reporter which reports the number of //expects// checks which
 	 * passed/failed at the end of the test run 
 	 */
+
+    var tidy = function tidy(text) {
+
+        text.replace("|", "||")
+            .replace("'", "|'")
+            .replace("\n", "|n")
+            .replace("\r", "|r")
+            .replace("\u0085", "|x")
+            .replace("\u2028", "|l")
+            .replace("\u2029", "|p")
+            .replace("[", "|[")
+            .replace("]", "|]")
+
+        return text;
+    }
+
+
     return {
         reportRunnerStarting: function(runner) {
             if (EnvJasmine.incrementalOutput) {
@@ -39,8 +56,14 @@ var RhinoReporter = function() {
         },
 
         reportSpecResults: function(spec) {
+            var suiteName = this.getSuiteName(spec.suite);
+            var testName = suiteName + ":" + spec.description;
+
+            EnvJasmine.teamCityReports.push("##teamcity[testStarted name='" + tidy(testName) + "']");
+
             if (spec.results().passed()) {
                 System.out.print(EnvJasmine.green("."));
+                EnvJasmine.teamCityReports.push("##teamcity[testPassed " + "name='" + tidy(testName) + "']");
             } else {
                 var i, msg, result,
                     specResults = spec.results().getItems();
@@ -67,8 +90,10 @@ var RhinoReporter = function() {
                     }
                 }
 
+                EnvJasmine.teamCityReports.push("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + msg[4] +"']");
                 EnvJasmine.results.push(msg.join("\n"));
             }
+            EnvJasmine.teamCityReports.push("##teamcity[testFinished name='" + tidy(testName) + "']");
         },
 
         log: function(str) {
@@ -93,20 +118,7 @@ var RhinoSpecReporter = function() {
 	 * of the test run 
 	 */
 
-    var tidy = function tidy(text) {
 
-        text.replace("|", "||")
-            .replace("'", "|'")
-            .replace("\n", "|n")
-            .replace("\r", "|r")
-            .replace("\u0085", "|x")
-            .replace("\u2028", "|l")
-            .replace("\u2029", "|p")
-            .replace("[", "|[")
-            .replace("]", "|]")
-
-        return text;
-    }
 
     return {
         reportRunnerStarting: function(runner) {
@@ -135,15 +147,10 @@ var RhinoSpecReporter = function() {
         },
 
         reportSpecResults: function(spec) {
-            var suiteName = this.getSuiteName(spec.suite);
-            var testName = suiteName + ":" + spec.description;
-            EnvJasmine.teamCityReports.push("##teamcity[testStarted name='" + tidy(testName) + "']");
 
             if (spec.results().passed()) {
                 System.out.print(EnvJasmine.green("."));
                 EnvJasmine.passedCount += 1;
-
-                EnvJasmine.teamCityReports.push("##teamcity[testPassed " + "name='" + tidy(testName) + "']");
             } else {
                 var i, msg, result,
                     specResults = spec.results().getItems();
@@ -172,9 +179,7 @@ var RhinoSpecReporter = function() {
                 EnvJasmine.failedCount += 1;
                 EnvJasmine.results.push(msg.join("\n"));
 
-                EnvJasmine.teamCityReports.push("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + msg[4] +"']");
             }
-            EnvJasmine.teamCityReports.push("##teamcity[testFinished name='" + tidy(testName) + "']");
             EnvJasmine.totalCount += 1;
         },
 
@@ -193,22 +198,5 @@ var RhinoSpecReporter = function() {
         }
     };
 };
-
-var TeamCityReporter = function() {
-
-
-
-    return {
-        reportPassedTest: new function(testName) {
-            System.out.print("testFinished " + "name='" + tidy(testName) + "'");
-            System.out.println("##teamcity[testFinished " + "name='" + tidy(testName) + "']");
-        },
-
-        reportFailedTest: new function(testName, details) {
-            System.out.println("testFailed " + "name='" + tidy(testName) + "' details='" + "dummy details" +"'");
-            System.out.println("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + "dummy details" +"']");
-        }
-    }
-}
 
 

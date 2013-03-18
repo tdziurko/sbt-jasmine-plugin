@@ -198,6 +198,7 @@ function runTests(appJsRoot, appJsLibRoot, testRoot, confFile, envHtml) {
     print("##teamcity[testStarted name='tomek test']");
     print("##teamcity[testFailed name='tomek test' message='failure message' details='message and stack trace']");
     print("##teamcity[testFinished name='tomek test']");
+    print("XXXXX = " + EnvJasmine.teamCityReports.length);
     if (EnvJasmine.teamCityReports.length > 0) {
         print("\n")
         print(EnvJasmine.teamCityReports.join("\n"));
