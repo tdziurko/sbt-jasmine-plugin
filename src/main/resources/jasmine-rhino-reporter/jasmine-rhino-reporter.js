@@ -195,13 +195,13 @@ var TeamCityReporter = function() {
 
     return {
         reportPassedTest: new function(testName) {
-            print("testFinished " + "name='" + tidy(testName) + "'");
-            print("##teamcity[testFinished " + "name='" + tidy(testName) + "']");
+            System.out.print("testFinished " + "name='" + tidy(testName) + "'");
+            System.out.println("##teamcity[testFinished " + "name='" + tidy(testName) + "']");
         },
 
         reportFailedTest: new function(testName, details) {
-            print("testFailed " + "name='" + tidy(testName) + "' details='" + tidy(details) +"'");
-            print("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + tidy(details) +"']");
+            System.out.println("testFailed " + "name='" + tidy(testName) + "' details='" + "dummy details" +"'");
+            System.out.println("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + "dummy details" +"']");
         }
     }
 }
