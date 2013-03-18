@@ -155,6 +155,8 @@ var RhinoSpecReporter = function() {
                 EnvJasmine.failedCount += 1;
                 EnvJasmine.results.push(msg.join("\n"));
                 var suiteName = this.getSuiteName(spec.suite);
+                System.out.println("testFailed " + "name='" + tidy(suiteName + ": " + spec.description) + "' details='" + "dummy details" +"'");
+                System.out.println("##teamcity[testFailed " + "name='" + tidy(suiteName + ": " + spec.description) + "' details='" + "dummy details" +"']");
                 teamCityReporter.reportFailedTest(suiteName + ": " + spec.description, specResults);
             }
             EnvJasmine.totalCount += 1;
