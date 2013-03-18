@@ -92,6 +92,9 @@ var RhinoSpecReporter = function() {
 	 * Reporter which reports the number of //specs// which passed/failed at the end
 	 * of the test run 
 	 */
+
+    var teamCityReporter = TeamCityReporter();
+
     return {
         reportRunnerStarting: function(runner) {
             if (EnvJasmine.incrementalOutput) {
@@ -122,6 +125,8 @@ var RhinoSpecReporter = function() {
             if (spec.results().passed()) {
                 System.out.print(EnvJasmine.green("."));
                 EnvJasmine.passedCount += 1;
+                var suiteName = this.getSuiteName(spec.suite);
+                teamCityReporter.reportPassedTest(suiteName +": " + spec.description);
             } else {
                 var i, msg, result,
                     specResults = spec.results().getItems();
@@ -148,8 +153,9 @@ var RhinoSpecReporter = function() {
                     }
                 }
                 EnvJasmine.failedCount += 1;
-
                 EnvJasmine.results.push(msg.join("\n"));
+                var suiteName = this.getSuiteName(spec.suite);
+                teamCityReporter.reportFailedTest(suiteName + ": " + spec.description, msg);
             }
             EnvJasmine.totalCount += 1;
         },
@@ -169,5 +175,33 @@ var RhinoSpecReporter = function() {
         }
     };
 };
+
+var TeamCityReporter = function() {
+
+    var tidy = function tidy(text) {
+
+        text.replace("|", "||")
+            .replace("'", "|'")
+            .replace("\n", "|n")
+            .replace("\r", "|r")
+            .replace("\u0085", "|x")
+            .replace("\u2028", "|l")
+            .replace("\u2029", "|p")
+            .replace("[", "|[")
+            .replace("]", "|]")
+
+        return text;
+    }
+
+    return {
+        reportPassedTest: new function(testName) {
+            System.out.print(EnvJasmine.green("##teamcity[testFinished " + "name='" + tidy(testName) + "']"));
+        },
+
+        reportFailedTest: new function(testName, details) {
+            System.out.print(EnvJasmine.green("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + tidy(details) +"']"));
+        }
+    }
+}
 
 
