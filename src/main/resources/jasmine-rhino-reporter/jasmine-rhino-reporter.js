@@ -8,7 +8,7 @@ var RhinoReporter = function() {
 
     var tidy = function tidy(text) {
 
-        text.replace("|", "||")
+        var cleanText = text.replace("|", "||")
             .replace("'", "|'")
             .replace("\n", "|n")
             .replace("\r", "|r")
@@ -18,7 +18,7 @@ var RhinoReporter = function() {
             .replace("[", "|[")
             .replace("]", "|]")
 
-        return text;
+        return cleanText;
     }
 
 
