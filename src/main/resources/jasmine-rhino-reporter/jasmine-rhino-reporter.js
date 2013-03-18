@@ -90,7 +90,7 @@ var RhinoReporter = function() {
                     }
                 }
 
-                EnvJasmine.teamCityReports.push("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + msg[4] +"']");
+                EnvJasmine.teamCityReports.push("##teamcity[testFailed " + "name='" + tidy(testName) + "' details='" + tidy(msg[4]) +"']");
                 EnvJasmine.results.push(msg.join("\n"));
             }
             EnvJasmine.teamCityReports.push("##teamcity[testFinished name='" + tidy(testName) + "']");
