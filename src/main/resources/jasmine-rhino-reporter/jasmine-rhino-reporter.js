@@ -94,8 +94,9 @@ var RhinoReporter = function() {
                     }
                 }
 
-                EnvJasmine.teamCityReports.push("##teamcity[testFailed " + "name='" + tidy(testName) +
-                    "' message='" + tidy(message) +"' details='" + tidy(details) + "']");
+//                EnvJasmine.teamCityReports.push("##teamcity[testFailed " + "name='" + tidy(testName) +
+//                    "' message='" + tidy(message) +"' details='" + tidy(details) + "']");
+                EnvJasmine.teamCityReports.push("##teamcity[testFailed " + "name='" + tidy(testName) + "']");
                 EnvJasmine.results.push(msg.join("\n"));
             }
             EnvJasmine.teamCityReports.push("##teamcity[testFinished name='" + tidy(testName) + "']");
