@@ -6,19 +6,52 @@ var RhinoReporter = function() {
 	 * passed/failed at the end of the test run 
 	 */
 
+    /**
+     * ReplaceAll by Fagner Brack (MIT Licensed)
+     * Replaces all occurrences of a substring in a string
+     */
+    String.prototype.replaceAll = function( token, newToken, ignoreCase ) {
+        var _token;
+        var str = this + "";
+        var i = -1;
+
+        if ( typeof token === "string" ) {
+
+            if ( ignoreCase ) {
+
+                _token = token.toLowerCase();
+
+                while( (
+                    i = str.toLowerCase().indexOf(
+                        token, i >= 0 ? i + newToken.length : 0
+                    ) ) !== -1
+                    ) {
+                    str = str.substring( 0, i ) +
+                        newToken +
+                        str.substring( i + token.length );
+                }
+
+            } else {
+                return this.split( token ).join( newToken );
+            }
+
+        }
+        return str;
+    };
+
     var tidy = function tidy(text) {
 
-        var cleanText = text.replace("|", "||")
-            .replace("'", "|'")
-            .replace("\n", "|n")
-            .replace("\r", "|r")
-            .replace("\u0085", "|x")
-            .replace("\u2028", "|l")
-            .replace("\u2029", "|p")
-            .replace("[", "|[")
-            .replace("]", "|]")
+        var cleanedText = text.replaceAll("|", "||")
+            .replaceAll("'", "|'")
+            .replaceAll("\n", "|n")
+            .replaceAll("\r", "|r")
+            .replaceAll("\u0085", "|x")
+            .replaceAll("\u2028", "|l")
+            .replaceAll("\u2029", "|p")
+            .replaceAll("[", "|[")
+            .replaceAll("]", "|]")
 
-        return cleanText;
+        return cleanedText;
     }
 
 
