@@ -117,6 +117,7 @@ EnvJasmine.disableColor = (function (env) {
 }());
 
 EnvJasmine.results = [];
+EnvJasmine.teamCityReports = [];
 
 EnvJasmine.loadConfig = function () {
     EnvJasmine.loadLibGlobal("jasmineEnv.js")
@@ -163,11 +164,6 @@ function runTests(appJsRoot, appJsLibRoot, testRoot, confFile, envHtml) {
         });
     }
 
-    print("##teamcity[testSuiteStarted name='JasmineTests']");
-
-    print("##teamcity[testStarted name='tomek test']");
-    print("##teamcity[testFailed name='tomek test' message='failure message' details='message and stack trace']");
-    print("##teamcity[testFinished name='tomek test']");
     for (i = 0, len = EnvJasmine.specs.length >>> 0; i < len; i += 1) {
         try {
             EnvJasmine.currentScope = {};
@@ -192,12 +188,21 @@ function runTests(appJsRoot, appJsLibRoot, testRoot, confFile, envHtml) {
             }
         }
     }
-    print("##teamcity[testSuiteFinished name='JasmineTests']");
-
     if (EnvJasmine.results.length > 0) {
         print("\n");
         print(EnvJasmine.red(EnvJasmine.results.join("\n\n")));
     }
+
+    print("##teamcity[testSuiteStarted name='JasmineTests']");
+
+    print("##teamcity[testStarted name='tomek test']");
+    print("##teamcity[testFailed name='tomek test' message='failure message' details='message and stack trace']");
+    print("##teamcity[testFinished name='tomek test']");
+    if (EnvJasmine.teamCityReports.length > 0) {
+        print("\n")
+        print(EnvJasmine.teamCityReports.join("\n"));
+    }
+    print("##teamcity[testSuiteFinished name='JasmineTests']");
 
     print();
     print(EnvJasmine[EnvJasmine.passedCount ? 'green' : 'plain']("Passed: " + EnvJasmine.passedCount));
