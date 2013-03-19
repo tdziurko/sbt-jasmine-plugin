@@ -194,12 +194,10 @@ function runTests(appJsRoot, appJsLibRoot, testRoot, confFile, envHtml) {
         print(EnvJasmine.red(EnvJasmine.results.join("\n\n")));
     }
 
-    print("##teamcity[testSuiteStarted name='Jasmine Tests']");
     if (EnvJasmine.teamCityReports.length > 0) {
         print("\n")
         print(EnvJasmine.teamCityReports.join("\n"));
     }
-    print("##teamcity[testSuiteFinished name='Jasmine Tests']");
 
     print();
     print(EnvJasmine[EnvJasmine.passedCount ? 'green' : 'plain']("Passed: " + EnvJasmine.passedCount));
