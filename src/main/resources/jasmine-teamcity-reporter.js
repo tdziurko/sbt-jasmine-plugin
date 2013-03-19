@@ -60,9 +60,9 @@ var TeamCityReporter = function() {
         reportSuiteResults: function(suite) {  },
 
         reportSpecStarting: function(spec) {  },
-
         reportSpecResults: function(spec) {
-            var fileName = EnvJasmine.specFile;
+            var lastIndexOfSeparator = EnvJasmine.specFile.lastIndexOf(EnvJasmine.SEPARATOR)
+            var fileName = EnvJasmine.specFile.substring(lastIndexOfSeparator + EnvJasmine.SEPARATOR.length);
             var suiteName = this.getSuiteName(spec.suite);
             var testName = tidy(fileName + ", " + suiteName + ":" + spec.description);
 
