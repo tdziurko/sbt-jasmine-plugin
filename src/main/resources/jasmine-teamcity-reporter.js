@@ -62,8 +62,9 @@ var TeamCityReporter = function() {
         reportSpecStarting: function(spec) {  },
 
         reportSpecResults: function(spec) {
+            var fileName = EnvJasmine.specFile;
             var suiteName = this.getSuiteName(spec.suite);
-            var testName = tidy(suiteName + ":" + spec.description);
+            var testName = tidy(fileName + ", " + suiteName + ":" + spec.description);
 
             EnvJasmine.teamCityReports.push("##teamcity[testStarted name='" + testName + "']");
 
