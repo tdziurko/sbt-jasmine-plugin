@@ -54,11 +54,11 @@ var TeamCityReporter = function() {
 
     return {
         reportRunnerStarting: function(runner) {
-            print("##teamcity[testSuiteStarted name='Jasmine Tests']");
+            EnvJasmine.teamCityReports.push("##teamcity[testSuiteStarted name='Jasmine Tests']");
         },
 
         reportRunnerResults: function(runner) {
-            print("##teamcity[testSuiteFinished name='Jasmine Tests']");
+            EnvJasmine.teamCityReports.push("##teamcity[testSuiteFinished name='Jasmine Tests']");
         },
 
         reportSuiteResults: function(suite) {  },
