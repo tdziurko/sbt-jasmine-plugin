@@ -142,6 +142,7 @@ function runTests(appJsRoot, appJsLibRoot, testRoot, confFile, envHtml) {
     }
 
     jasmine.getEnv().addReporter(new EnvJasmine.reporterClass());
+    jasmine.getEnv().addReporter(new TeamCityReporter());
     jasmine.getEnv().updateInterval = 0; // do not yield.
 
     if (EnvJasmine.suppressConsoleMsgs === true) {
@@ -193,16 +194,12 @@ function runTests(appJsRoot, appJsLibRoot, testRoot, confFile, envHtml) {
         print(EnvJasmine.red(EnvJasmine.results.join("\n\n")));
     }
 
-    print("##teamcity[testSuiteStarted name='JasmineTests']");
-
-//    print("##teamcity[testStarted name='tomek test']");
-//    print("##teamcity[testFailed name='tomek test' message='failure message' details='message and stack trace']");
-//    print("##teamcity[testFinished name='tomek test']");
+    print("##teamcity[testSuiteStarted name='Jasmine Tests']");
     if (EnvJasmine.teamCityReports.length > 0) {
         print("\n")
         print(EnvJasmine.teamCityReports.join("\n"));
     }
-    print("##teamcity[testSuiteFinished name='JasmineTests']");
+    print("##teamcity[testSuiteFinished name='Jasmine Tests']");
 
     print();
     print(EnvJasmine[EnvJasmine.passedCount ? 'green' : 'plain']("Passed: " + EnvJasmine.passedCount));
