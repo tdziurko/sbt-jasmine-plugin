@@ -19,13 +19,15 @@
             return cleanedText;
         }
 
+        var jasmineConsole = jasmine.getGlobal().console;
+
         return {
             reportRunnerStarting: function(runner) {
-                EnvJasmine.teamCityReports.push("##teamcity[testSuiteStarted name='Jasmine Tests']");
+                jasmineConsole.log("##teamcity[testSuiteStarted name='Jasmine Tests']");
             },
 
             reportRunnerResults: function(runner) {
-                EnvJasmine.teamCityReports.push("##teamcity[testSuiteFinished name='Jasmine Tests']");
+                jasmineConsole.log("##teamcity[testSuiteFinished name='Jasmine Tests']");
             },
 
             reportSuiteResults: function(suite) {  },
@@ -37,11 +39,11 @@
                 var suiteName = this.getSuiteName(spec.suite);
                 var testName = tidy(fileName + ", " + suiteName + ":" + spec.description);
 
-                EnvJasmine.teamCityReports.push("##teamcity[testStarted name='" + testName + "']");
+                jasmineConsole.log("##teamcity[testStarted name='" + testName + "']");
 
                 if (spec.results().passed()) {
                     System.out.print(EnvJasmine.green("."));
-                    EnvJasmine.teamCityReports.push("##teamcity[testPassed " + "name='" + testName + "']");
+                    jasmineConsole.log("##teamcity[testPassed " + "name='" + testName + "']");
                 } else {
                     var i, result, specResults = spec.results().getItems();
                     var message = "";
@@ -64,10 +66,10 @@
                         }
                     }
 
-                    EnvJasmine.teamCityReports.push("##teamcity[testFailed " + "name='" + tidy(testName) +
+                    jasmineConsole.log("##teamcity[testFailed " + "name='" + tidy(testName) +
                         "' message='" + tidy(message) +"' details='" + tidy(details) + "']");
                 }
-                EnvJasmine.teamCityReports.push("##teamcity[testFinished name='" + testName + "']");
+                jasmineConsole.log("##teamcity[testFinished name='" + testName + "']");
             },
 
             log: function(str) {    },

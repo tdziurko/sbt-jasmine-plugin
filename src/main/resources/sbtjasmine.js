@@ -117,7 +117,6 @@ EnvJasmine.disableColor = (function (env) {
 }());
 
 EnvJasmine.results = [];
-EnvJasmine.teamCityReports = [];
 
 EnvJasmine.loadConfig = function () {
     EnvJasmine.loadLibGlobal("jasmineEnv.js")
@@ -191,11 +190,6 @@ function runTests(appJsRoot, appJsLibRoot, testRoot, confFile, envHtml) {
     if (EnvJasmine.results.length > 0) {
         print("\n");
         print(EnvJasmine.red(EnvJasmine.results.join("\n\n")));
-    }
-
-    if (EnvJasmine.teamCityReports.length > 0) {
-        print("\n")
-        print(EnvJasmine.teamCityReports.join("\n"));
     }
 
     print();
