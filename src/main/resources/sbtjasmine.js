@@ -142,7 +142,6 @@ function runTests(appJsRoot, appJsLibRoot, testRoot, confFile, envHtml) {
     }
 
     jasmine.getEnv().addReporter(new EnvJasmine.reporterClass());
-    jasmine.getEnv().addReporter(new TeamCityReporter());
     jasmine.getEnv().updateInterval = 0; // do not yield.
 
     if (EnvJasmine.suppressConsoleMsgs === true) {
